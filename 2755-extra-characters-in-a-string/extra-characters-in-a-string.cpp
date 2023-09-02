@@ -1,30 +1,34 @@
 class Solution {
 public:
-    int minExtraChar(string s, vector<string> dictionary) {
-        int n = s.length();
-        unordered_set<string> dictionarySet(dictionary.begin(), dictionary.end());
-        unordered_map<int, int> memo;
-
-        function<int(int)> dp = [&](int start) {
-            if (start == n) {
-                return 0;
-            }
-            if (memo.count(start)) {
-                return memo[start];
-            }
-            // To count this character as a left over character 
-            // move to index 'start + 1'
-            int ans = dp(start + 1) + 1;
-            for (int end = start; end < n; end++) {
-                auto curr = s.substr(start, end - start + 1);
-                if (dictionarySet.count(curr)) {
-                    ans = min(ans, dp(end + 1));
-                }
-            }
-
-            return memo[start] = ans;
-        };
-
-        return dp(0);
+    int solve(string& s, unordered_map<string, int>&mp, vector<int>&dp, int index)
+    {
+        if (index >= s.size()) return 0;
+        if (dp[index] != -1) return dp[index]; //use the stored results
+        
+        string currStr = "";
+        int minExtra = s.size();
+        for (int cutIdx = index; cutIdx < s.size(); cutIdx++)
+        {
+            currStr.push_back(s[cutIdx]);
+            //currStr will be a string from (index to cutIdx)
+            
+            //if string not in dictionary, we have to delete as they are extra chars
+            int currExtra = (mp.count(currStr))? 0 : currStr.size();
+            int nextExtra = solve(s, mp, dp, cutIdx + 1);
+            int totalExtra = currExtra + nextExtra;
+            
+            minExtra = min(minExtra, totalExtra);
+        }
+        return dp[index] = minExtra;
+    }
+    int minExtraChar(string s, vector<string>& dictionary) 
+    {
+        vector<int>dp(s.size(), -1);
+        unordered_map<string, int>mp;
+        for (string& word : dictionary) mp[word]++;
+        
+        int ans = solve(s, mp, dp, 0);
+        return ans;
+        
     }
 };
