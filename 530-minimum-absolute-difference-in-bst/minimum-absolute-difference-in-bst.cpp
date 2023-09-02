@@ -10,7 +10,8 @@
  * };
  */
 
-//#include <bits/stdc++.h>
+#include <bits/stdc++.h>
+#include <cmath>
 
 class Solution {
 public:
@@ -21,7 +22,7 @@ public:
         }
         
         inorderTraversal(root->left);
-
+        // Store the nodes in the list.
         inorderNodes.push_back(root->val);
         inorderTraversal(root->right);
     }
@@ -29,6 +30,9 @@ public:
 
         inorderTraversal(root);
 
+        //sort(inorderNodes.begin(), inorderNodes.end());
+        //int n = inorderNodes.size();
+       // long long mindiff = inorderNodes[n-2] - inorderNodes[n-1];
         int min1 = INT_MAX;
         int diff;
         for(int i = 1 ; i < inorderNodes.size(); i++){
