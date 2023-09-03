@@ -10,28 +10,22 @@
  */
 class Solution {
 public:
-int pairSum(ListNode* head) {
-ListNode* slow = head;
-ListNode* fast = head;
-int maxVal = 0;
-while(fast && fast -> next)
-{
-slow = slow -> next;
-fast = fast -> next -> next;
-}
-ListNode *nextNode, *prev = NULL;
-while (slow) {
-nextNode = slow->next;
-slow->next = prev;
-prev = slow;
-slow = nextNode;
-}
-while(prev)
-{
-maxVal = max(maxVal, head -> val + prev -> val);
-prev = prev -> next;
-head = head -> next;
-}
-return maxVal;
-}
+    int pairSum(ListNode* head) {
+       vector<int> v;
+       ListNode* current = head;
+       while(current!= NULL){
+           v.push_back(current->val);
+           current= current->next;
+       }
+       int sum = 0;
+       int max= 0;
+       for(int i = 0; i<v.size()/2; i++){
+           sum = v[i] + v[v.size()-1-i];
+       if(max<sum){
+           max= sum;
+           sum = 0;
+       }
+       }
+       return max;
+    }
 };
