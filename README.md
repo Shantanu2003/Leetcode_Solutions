@@ -5,3 +5,4 @@
 ### 1) README.md file which contains the problem statement.<br>
 ### 2) C++ solutions of the questions.
 ## The questions and solutions are automatically updated in the repository using the LeetSync Chrome Extension.
+## Incase of any suggestions for the solutions, feel free to pull the repository and push the changes.
