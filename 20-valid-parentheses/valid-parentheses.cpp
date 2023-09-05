@@ -14,24 +14,28 @@ public:
                     st.push(c);
                 }
                 else{
-                   if(st.empty())
-                   return false;
+
+                    if(st.empty())
+                    flag= false;
 
                    else if(st.top()== '(' && s[i] != ')') 
-                   return false;
+                   flag= false;
 
                    else if (st.top()== '{' && s[i] != '}')
-                   return false;
+                   flag= false;
 
                    else if(st.top()== '[' && s[i] != ']')
-                   return false;
-
+                   flag= false;
 
                    else
                    st.pop();
                 }
 
-            }     
-    return st.empty();
+            }
+            
+    if(!st.empty()){
+    flag = false;
+    }
+    return flag;
     }
 };
