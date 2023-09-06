@@ -23,12 +23,13 @@ public:
            temp= temp->next;
        }
        ListNode* temp1 = NULL;
+       ListNode* temp2 = head;
        for(int i =0 ; i< k ; i++){
-        ans.push_back(head);
+        ans.push_back(temp2);
         int j = count / k + (i < count % k ? 1 : 0);
         while(head != NULL && j>0){
-            temp1 = head;
-            head= head->next;
+            temp1 = temp2;
+            temp2= temp2->next;
             j--;
         }
         if(temp1 != NULL) temp1->next = NULL;
