@@ -1,25 +1,24 @@
 class Solution {
-    private:
-    int Sum(int n)
-{
-    int squareSum = 0;
+private:
+   int digitSquareSum(int n) {
+    int sum = 0, tmp;
     while (n) {
-        squareSum += (n % 10) * (n % 10);
+        tmp = n % 10;
+        sum += tmp * tmp;
         n /= 10;
     }
-    return squareSum;
+    return sum;
 }
 public:
-    bool isHappy(int n) {
-    set<int>mp;
-    while(1){
-        n = Sum(n);
-        if(n == 1)return true;
-
-        if(mp.find(n)!=mp.end())
-        return false;
-
-        mp.insert(n);
-    }
-    }
+bool isHappy(int n) {
+    int slow, fast;
+    slow = fast = n;
+    do {
+        slow = digitSquareSum(slow);
+        fast = digitSquareSum(fast);
+        fast = digitSquareSum(fast);
+    } while(slow != fast);
+    if (slow == 1) return 1;
+    else return 0;
+}
 };
