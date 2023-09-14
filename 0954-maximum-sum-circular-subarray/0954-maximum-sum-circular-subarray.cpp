@@ -34,11 +34,7 @@ public:
     if(minS== totalSum)
     return maxS;
 
-    else{
-    if(maxS>totalSum-minS)
-    return maxS;
-
-    return totalSum - minS;
-    }
+    int ans = totalSum-minS;
+    return max(maxS, ans);
     }
 };
