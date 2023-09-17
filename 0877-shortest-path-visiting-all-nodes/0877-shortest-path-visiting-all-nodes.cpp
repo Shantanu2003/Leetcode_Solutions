@@ -1,41 +1,47 @@
 class Solution {
 public:
-    int shortestPathLength(vector<vector<int>>& graph) {
-        int n = graph.size();
-        int mask = (1<<n) - 1;
-        queue<pair<int,pair<int,int>>> q;
-
-        vector<vector<bool>> visited(mask + 1, vector<bool>(n, false));
-
-        for (int node = 0; node < n; ++node) {
-            int origMask = (1 << node);
-            q.push({node, {origMask, 1}});
-            visited[origMask][node] = true;
-        }
-
+    
+    int solve(vector<vector<int>>&g){
+        int n=g.size(); 
+        int all = (1 << n) - 1; //11111
         
-        while (!q.empty()) {
-            auto curr = q.front();
+        queue<pair<int , pair<int, int>>>q; 
+        set<pair<int, int>>vis;   
+        for(int i=0;i<n;i++)
+        {
+            int mask = (1<<i);
+            q.push({i, {0, mask}});
+            vis.insert({i, mask});
+        }
+        
+        while(!q.empty()){
+            auto node = q.front();
             q.pop();
-
-            int currNode = curr.first;
-            int currMask = curr.second.first;
-            int currLength = curr.second.second;
-
-            if (currMask == mask)
-                return currLength - 1;
-
-            for (int i = 0; i < graph[currNode].size(); ++i) {
-                int neighbor = graph[currNode][i];
-                int newMask = currMask | (1 << neighbor);
-
-                if (visited[newMask][neighbor])
-                    continue;
-
-                q.push({neighbor, {newMask, currLength + 1}});
-                visited[newMask][neighbor] = true;
+            int val = node.first , dist = node.second.first , mask = node.second.second;
+            for(auto nbr : g[val]){
+                int newMask = (mask | (1<<nbr)); 
+                
+                if(newMask == all)
+                    return dist+1; 
+                
+                else if(vis.count({nbr, newMask})){
+                    continue; 
+                }
+                else{
+                    q.push({nbr,{dist+1,newMask}});
+                    vis.insert({nbr, newMask});               
+                }
             }
         }
-        return -1;  
+        return 0;
+    }
+    
+    int shortestPathLength(vector<vector<int>>& graph) {
+        
+        int n=graph.size();
+        if(n==1) 
+            return 0;
+        
+        return solve(graph);
     }
 };
