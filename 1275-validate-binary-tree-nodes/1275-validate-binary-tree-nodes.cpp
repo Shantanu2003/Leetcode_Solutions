@@ -1,47 +1,58 @@
-class Solution {
+class UnionFind {   
 public:
-    bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) {
-        int root = findRoot(n, leftChild, rightChild);
-        if (root == -1) {
+    int components;
+    int n;
+    vector<int> parents;
+
+    UnionFind(int n) {
+        this->n = n;
+        parents = vector(n, 0);
+        components = n;
+        
+        for (int i = 0; i < n; i++) {
+            parents[i] = i;
+        }
+    }
+    
+    bool join(int parent, int child) {
+        int parentParent = find(parent);
+        int childParent = find(child);
+        
+        if (childParent != child || parentParent == childParent) {
             return false;
         }
         
-        unordered_set<int> seen;
-        queue<int> queue;
-        seen.insert(root);
-        queue.push(root);
+        components--;
+        parents[childParent] = parentParent;
+        return true;
+    }
+    
+    int find(int node) {
+        if (parents[node] != node) {
+            parents[node] = find(parents[node]);
+        }
         
-        while (!queue.empty()) {
-            int node = queue.front();
-            queue.pop();
-            
+        return parents[node];
+    }
+};
+
+class Solution {
+public:
+    bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) {
+        UnionFind uf(n);
+        for (int node = 0; node < n; node++) {
             int children[] = {leftChild[node], rightChild[node]};
             for (int child : children) {
-                if (child != -1) {
-                    if (seen.find(child) != seen.end()) {
-                        return false;
-                    }
-                    
-                    queue.push(child);
-                    seen.insert(child);
+                if (child == -1) {
+                    continue;
+                }
+                
+                if (!uf.join(node, child)) {
+                    return false;
                 }
             }
         }
         
-        return seen.size() == n;
-    }
-    
-    int findRoot(int n, vector<int>& left, vector<int>& right) {
-        unordered_set<int> children;
-        children.insert(left.begin(), left.end());
-        children.insert(right.begin(), right.end());
-        
-        for (int i = 0; i < n; i++) {
-            if (children.find(i) == children.end()) {
-                return i;
-            }
-        }
-        
-        return -1;
+        return uf.components == 1;
     }
 };
