@@ -1,7 +1,7 @@
 class Solution {
 public:
     int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital) {
-       vector<pair<int, int>> projects;
+       vector<pair<int, int>> projects(profits.size());
     for (int i = 0; i < profits.size(); i++) {
         projects.push_back(make_pair(capital[i], profits[i]));
     }
