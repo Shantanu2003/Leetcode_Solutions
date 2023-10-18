@@ -34,6 +34,6 @@ public:
         }
         
         memo[node] = time[node] + ans;
-        return time[node] + ans;
+        return memo[node];
     }
 };
