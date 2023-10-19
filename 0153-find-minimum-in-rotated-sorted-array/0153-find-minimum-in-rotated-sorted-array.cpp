@@ -12,6 +12,6 @@ public:
             else
             high= mid;
         }
-        return nums[high];
+        return nums[low];
     }
 };
