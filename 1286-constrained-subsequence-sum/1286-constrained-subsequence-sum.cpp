@@ -1,28 +1,20 @@
 class Solution {
 public:
     int constrainedSubsetSum(vector<int>& nums, int k) {
-    int n = nums.size();
-    std::vector<int> dp(n, 0);
+        priority_queue<pair<int, int>> heap;
+        heap.push({nums[0], 0});
+        int res = nums[0];
+        for(int  i = 1 ; i  <nums.size(); i++){
+            while(i-heap.top().second>k){
+                heap.pop();
+            }
+           
 
-    std::deque<int> maxValues;
+            int curr = max(0,heap.top().first) + nums[i];
+            res = max(res,curr);
+            heap.push({curr,i});
 
-    dp[0] = nums[0];
-    maxValues.push_back(0);
-
-    for (int i = 1; i < n; i++) {
-        while (maxValues.front() < i - k) {
-            maxValues.pop_front();
         }
-
-        dp[i] = std::max(nums[i], nums[i] + dp[maxValues.front()]);
-        
-        while (!maxValues.empty() && dp[i] >= dp[maxValues.back()]) {
-            maxValues.pop_back();
-        }
-
-        maxValues.push_back(i);
+        return res;
     }
-
-    return *std::max_element(dp.begin(), dp.end());     
-}
 };
