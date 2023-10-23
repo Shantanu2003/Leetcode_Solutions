@@ -8,7 +8,7 @@ public:
         int ans = 1;
 
         while (!st.empty() && price >= st.top().first) {
-            ans += st.top().second; // Add the span of the previous day
+            ans += st.top().second; 
             st.pop();
         }
 
