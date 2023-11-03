@@ -1,7 +1,7 @@
 class Solution {
 public:
     int maxVowels(string s, int k) {
-     int maxVowelCount = 0;
+      int maxVowelCount = 0;
         int vowelCount = 0;
 
         for (int i = 0; i < k; i++) {
