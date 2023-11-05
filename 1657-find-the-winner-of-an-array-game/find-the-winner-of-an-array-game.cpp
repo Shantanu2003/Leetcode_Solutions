@@ -2,11 +2,8 @@ class Solution {
 public:
     int getWinner(vector<int>& arr, int k) {
         int res = arr[0];
-        if (k > arr.size()) {
-            return *max_element(arr.begin(), arr.end());
-        } 
+        
     
-        else {
            int count0 = 0;  // Initialize both counts to 0
 
            for (int i = 1; i < arr.size(); i++) {
@@ -23,7 +20,7 @@ public:
                   break;
                }
            }
-        }
+        
         return res;
     }
 };
