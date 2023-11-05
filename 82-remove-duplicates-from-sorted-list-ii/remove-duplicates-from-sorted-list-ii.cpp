@@ -12,6 +12,10 @@ class Solution {
 public:
     ListNode* deleteDuplicates(ListNode* head) {
 
+        if (!head || !head->next) {
+        // The list has 0 or 1 node, so there's no middle node to delete.
+        return head;
+    }
 
         ListNode* current = head;
         ListNode* newHead = new ListNode(-1);  // Create a new dummy node
