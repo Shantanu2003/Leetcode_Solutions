@@ -17,76 +17,39 @@ public:
 */
 
 class Solution {
-/*Node* helper(Node* root){
-    if(root == NULL){
-     return NULL;
-    }
-
-    Node* newNode= new Node(root);
-    Node* temp= newNode;
-
-    
-}*/
 public:
-    Node* connect(Node* root) {
-       if (root == nullptr) {
-            return nullptr;
-        }
-
-        Node* current = root;
-
-        while (current != nullptr) {
-            Node* levelStart = current;
-            Node* nextLevelStart = nullptr;
-
-            while (current != nullptr) {
-                if (current->left) {
-                    if (current->right) {
-                        current->left->next = current->right;
-                    } else {
-                        Node* temp = current->next;
-                        while (temp != nullptr) {
-                            if (temp->left) {
-                                current->left->next = temp->left;
-                                break;
-                            } else if (temp->right) {
-                                current->left->next = temp->right;
-                                break;
-                            }
-                            temp = temp->next;
-                        }
-                    }
-
-                    if (!nextLevelStart) {
-                        nextLevelStart = current->left;
-                    }
-                }
-
-                if (current->right) {
-                    Node* temp = current->next;
-                    while (temp != nullptr) {
-                        if (temp->left) {
-                            current->right->next = temp->left;
-                            break;
-                        } else if (temp->right) {
-                            current->right->next = temp->right;
-                            break;
-                        }
-                        temp = temp->next;
-                    }
-
-                    if (!nextLevelStart) {
-                        nextLevelStart = current->right;
-                    }
-                }
-
-                current = current->next;
+    Node* helper(Node* cur){
+        while(cur){
+            if(cur->left){
+                
+                return cur->left;
             }
-
-            current = nextLevelStart;
+             else if(cur->right){
+                return cur->right;
+            }
+            cur=cur->next;
         }
-
+        return NULL;
+    }
+    Node* connect(Node* root) {
+        if(!root)
+            return root;
+        
+        if(root->left){
+            if(root->right)
+                root->left->next = root->right;
+            else
+            {
+                root->left->next = helper(root->next);
+            }
+        }
+        if(root->next){
+            if(root->right){    
+                 root->right->next = helper(root->next);       
+            }
+        }
+        connect(root->right);
+        connect(root->left);
         return root;
     }
-
 };
