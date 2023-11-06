@@ -15,26 +15,27 @@ public:
             return nullptr;
         }
         vector<int>ans;
+        priority_queue<int, std::vector<int>, std::greater<int>> pq;
         for(int i = 0 ; i<lists.size(); i++){
             ListNode* head= lists[i];
             while(head){
-                ans.push_back(head->val);
+                pq.push(head->val);
                 head = head->next;
             }
             lists[i] = nullptr;
         }
-        if(ans.empty()){
+        if(pq.empty()){
             return nullptr;
         }
-        sort(ans.begin(),ans.end());
-        ListNode* newNode = new ListNode(ans[0]);
+        ListNode* newNode = new ListNode(-1);
         ListNode* current = newNode;
 
-        for (int i = 1; i < ans.size(); i++) {
-            current->next = new ListNode(ans[i]);
+        while(!pq.empty()){
+            current->next = new ListNode(pq.top());
             current = current->next;
+            pq.pop();
         }
 
-        return newNode;
+        return newNode->next;
     }
 };
