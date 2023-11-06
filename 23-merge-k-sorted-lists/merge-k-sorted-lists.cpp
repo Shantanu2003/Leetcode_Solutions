@@ -27,15 +27,20 @@ public:
         if(pq.empty()){
             return nullptr;
         }
-        ListNode* newNode = new ListNode(-1);
-        ListNode* current = newNode;
+        ListNode* newNode = nullptr;
+        ListNode* current = nullptr;
 
-        while(!pq.empty()){
-            current->next = new ListNode(pq.top());
-            current = current->next;
+         while (!pq.empty()) {
+            if (!current) {
+                current = new ListNode(pq.top());
+                newNode = current;
+            } else {
+                current->next = new ListNode(pq.top());
+                current = current->next;
+            }
             pq.pop();
         }
 
-        return newNode->next;
+        return newNode;
     }
 };
