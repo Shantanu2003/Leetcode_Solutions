@@ -16,7 +16,6 @@ public:
         }
         vector<int>ans;
         for(int i = 0 ; i<lists.size(); i++){
-            //if(lists[i]){
             ListNode* head= lists[i];
             while(head){
                 ans.push_back(head->val);
