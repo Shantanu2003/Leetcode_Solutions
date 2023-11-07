@@ -2,22 +2,31 @@ class Solution {
 public:
     string predictPartyVictory(string senate) {
    
-        int score = 0; // +ve for R and -ve for D
-        for (int i = 0; i < senate.size(); ++i) {
-            const char ch = senate[i];
-            if (ch == 'R') {
-                if (score < 0) 
-                    senate.push_back('D');
-                
-                ++score;
-            } else {
-                if (score > 0) 
-                    senate.push_back('R');
-                
-                --score;
-            }
+    queue<int> radiant, dire;
+    int n = senate.size();
+
+    for (int i = 0; i < n; i++) {
+        if (senate[i] == 'R') {
+            radiant.push(i);
+        } else {
+            dire.push(i);
         }
-        return score > 0 ? "Radiant" : "Dire";
+    }
+
+    while (!radiant.empty() && !dire.empty()) {
+        int r = radiant.front();
+        int d = dire.front();
+        radiant.pop();
+        dire.pop();
+
+        if (r < d) {
+            radiant.push(r + n);
+        } else {
+            dire.push(d + n);
+        }
+    }
+
+    return radiant.empty() ? "Dire" : "Radiant";
  
    }
 };
