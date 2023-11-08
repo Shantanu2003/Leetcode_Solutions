@@ -1,26 +1,25 @@
 class SmallestInfiniteSet {
 public:
-    std::set<int> s;
-    
+    int cur;
+    set<int> s;
     SmallestInfiniteSet() {
-        for (int i = 1; i <= 1000; i++) {
-            s.insert(i);
-        }
+        cur=1;
     }
     
     int popSmallest() {
-        int smallest = *s.begin();
-        s.erase(smallest);
-        return smallest;
+        if(s.size()){
+            int res=*s.begin(); s.erase(res);
+            return res;
+        }else{
+            cur++;
+            return cur-1;
+        }
     }
     
     void addBack(int num) {
-        if (s.find(num) == s.end()) {
-            s.insert(num);
-        }
+        if(cur>num) s.insert(num);
     }
 };
-
 
 /**
  * Your SmallestInfiniteSet object will be instantiated and called as such:
