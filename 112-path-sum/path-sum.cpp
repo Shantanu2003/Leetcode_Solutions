@@ -10,31 +10,11 @@
  * };
  */
 class Solution {
-private:
-  int sum(TreeNode* root, int currentSum, int targetSum){
-      if (root == nullptr) {
-            return false;  // If the node is null, the path sum cannot be equal to the target sum
-        }
-
-        // Update the current sum with the value of the current node
-        currentSum = currentSum + root->val;
-
-        // If the current node is a leaf node, check if the current sum equals the target sum
-        if (root->left == nullptr && root->right == nullptr) {
-            return currentSum == targetSum;
-        }
-
-        // Recursively check for the target sum in left and right subtrees
-        bool leftPath = sum(root->left, currentSum, targetSum);
-        bool rightPath = sum(root->right, currentSum, targetSum);
-
-        // Return true if either left or right subtree has a path sum equal to the target sum
-        return leftPath || rightPath;
-        
-  }
 public:
-    bool hasPathSum(TreeNode* root, int targetSum) {
-
-        return sum(root, 0, targetSum);
+    bool hasPathSum(TreeNode* root, int sum) {
+        if(!root)return false;                                         
+        sum=sum-root->val;                                             
+        if(sum==0&&!root->left&&!root->right)return true;           
+        return hasPathSum(root->left,sum)||hasPathSum(root->right,sum);
     }
 };
