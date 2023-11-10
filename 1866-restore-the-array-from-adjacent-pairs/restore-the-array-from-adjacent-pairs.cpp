@@ -2,21 +2,18 @@ class Solution {
 public:
     vector<int> restoreArray(vector<vector<int>>& adjacentPairs) {
         unordered_map<int, unordered_set<int>> adjList;
-        unordered_map<int, int> degrees;
 
         // Create an adjacency list and calculate the degrees of each node
         for (auto pair : adjacentPairs) {
             adjList[pair[0]].insert(pair[1]);
             adjList[pair[1]].insert(pair[0]);
-            degrees[pair[0]]++;
-            degrees[pair[1]]++;
         }
 
         // Find the start node, which has only one connection
         int start = 0;
-        for (auto &degree : degrees) {
-            if (degree.second == 1) {
-                start = degree.first;
+        for (auto& pair : adjList) {
+            if (pair.second.size() == 1) {
+                start = pair.first;
                 break;
             }
         }
