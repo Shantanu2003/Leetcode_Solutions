@@ -1,40 +1,36 @@
 class Solution {
 public:
     vector<int> restoreArray(vector<vector<int>>& adjacentPairs) {
-        unordered_map<int, unordered_set<int>> adjList;
+        unordered_map<int, vector<int>> graph;
 
-        // Create an adjacency list and calculate the degrees of each node
-        for (auto pair : adjacentPairs) {
-            adjList[pair[0]].insert(pair[1]);
-            adjList[pair[1]].insert(pair[0]);
+        for (auto& edge : adjacentPairs) {
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
         }
-
-        // Find the start node, which has only one connection
-        int start = 0;
-        for (auto& pair : adjList) {
+        
+        int root = 0;
+        for (auto& pair : graph) {
             if (pair.second.size() == 1) {
-                start = pair.first;
+                root = pair.first;
                 break;
             }
         }
-
-        vector<int> result;
-        unordered_set<int> visited;
-
-        // Traverse the adjacency list to reconstruct the array
-        reconstructArray(start, adjList, visited, result);
-
-        return result;
-    }
-
-    void reconstructArray(int current, unordered_map<int, unordered_set<int>>& adjList, unordered_set<int>& visited, vector<int>& result) {
-        visited.insert(current);
-        result.push_back(current);
-
-        for (int neighbor : adjList[current]) {
-            if (visited.find(neighbor) == visited.end()) {
-                reconstructArray(neighbor, adjList, visited, result);
+        
+        int curr = root;
+        vector<int> ans = {root};
+        int prev = INT_MAX;
+        
+        while (ans.size() < graph.size()) {
+            for (int neighbor : graph[curr]) {
+                if (neighbor != prev) {
+                    ans.push_back(neighbor);
+                    prev = curr;
+                    curr = neighbor;
+                    break;
+                }
             }
         }
+
+        return ans;
     }
 };
