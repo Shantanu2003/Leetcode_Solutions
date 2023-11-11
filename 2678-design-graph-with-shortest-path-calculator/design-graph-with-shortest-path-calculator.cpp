@@ -53,10 +53,7 @@ public:
                 }
             }
         }
-        if (dist[node2] == INT_MAX) {
         return -1; // No path found
-            }
-        return dist[node2];
     }
 };
 
