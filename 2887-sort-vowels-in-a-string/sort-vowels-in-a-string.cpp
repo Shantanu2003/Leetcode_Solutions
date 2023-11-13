@@ -1,19 +1,29 @@
 class Solution {
 public:
     string sortVowels(string s) {
-        vector<int> ans;
-        vector<int>index;
-        for(int i = 0; i<s.size() ; i++){
-          if(s[i] == 'a' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i]== 'u' || s[i] == 'A' || s[i] == 'E' || s[i]  == 'I'|| s[i] == 'O' || s[i] == 'U'){
-             ans.push_back(s[i]);
-             index.push_back(i);
-            }
+    unordered_set<char> vowels = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
+    string vowelChars;
+
+    for (char ch : s) {
+        if (vowels.count(ch)) {
+            vowelChars.push_back(ch);
         }
-        sort(ans.begin(), ans.end());
-       
-        for(int i = 0 ; i < index.size() ; i++){
-            s[index[i]] = ans[i];
+    }
+
+    sort(vowelChars.begin(), vowelChars.end());
+
+    string result;
+    int vowelIndex = 0;
+
+    for (char ch : s) {
+        if (vowels.count(ch)) {
+            result.push_back(vowelChars[vowelIndex]);
+            vowelIndex++;
+        } else {
+            result.push_back(ch);
         }
-        return s;
+    }
+
+    return result;
     }
 };
