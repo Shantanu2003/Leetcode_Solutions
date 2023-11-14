@@ -16,10 +16,7 @@ public:
             else
             low = mid +1;
         }
-        if(nums[mid]>target)
-        return mid;
-
-        else
-        return mid+1;
+        
+        return low;
     }
 };
