@@ -1,24 +1,31 @@
+#include <vector>
+#include <algorithm>
+
 class Solution {
 public:
-    vector<int> successfulPairs(vector<int>& spells, vector<int>& potions, long long success) {
-        vector<int> res;
-        sort(potions.begin(), potions.end());
-        for(int i = 0; i < spells.size(); i++){
-            int low = 0;
-            int high = potions.size() - 1;
-            int count = 0;
-            while(low <= high){
-                int mid = low + (high -low)/2;
+    std::vector<int> successfulPairs(std::vector<int>& spells, std::vector<int>& potions, long long success) {
+        std::vector<int> pairs;
 
-                 if ((long long)spells[i] * potions[mid] >= success) {
-                    count = potions.size() - mid;
-                    high = mid - 1; 
-                } else {
-                    low = mid +1;
-                }
-            }
-            res.push_back(count);
+        // Sort the potions array for binary search
+        std::sort(potions.begin(), potions.end());
+
+        int n = potions.size();
+        std::vector<int> prefixSum(n + 1, 0);
+
+        // Calculate the prefix sum
+        for (int i = 0; i < n; ++i) {
+            prefixSum[i + 1] = prefixSum[i] + (potions[i] >= success ? 1 : 0);
         }
-        return res;
+
+        for (int i = 0; i < spells.size(); ++i) {
+            int spellStrength = spells[i];
+
+            // Use lower_bound to find the first position where potion strength >= success/spellStrength
+            int count = n - (std::lower_bound(potions.begin(), potions.end(), (success + spellStrength - 1) / spellStrength) - potions.begin());
+
+            pairs.push_back(count);
+        }
+
+        return pairs;
     }
 };
