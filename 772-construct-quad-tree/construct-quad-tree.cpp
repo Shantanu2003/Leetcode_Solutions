@@ -58,10 +58,10 @@ class Solution {
   }
 
   bool allSame(const vector<vector<int>>& grid, int i, int j, int w) {
-    return all_of(begin(grid) + i, begin(grid) + i + w,
-                  [&](const vector<int>& row) {
-      return all_of(begin(row) + j, begin(row) + j + w,
-                    [&](int num) { return num == grid[i][j]; });
-    });
+     for (int x = i; x < i + w; ++x)
+      for (int y = j; y < j + w; ++y)
+        if (grid[x][y] != grid[i][j])
+          return false;
+    return true;
   }
 };
