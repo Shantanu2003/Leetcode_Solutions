@@ -8,6 +8,9 @@ void helper(int idx, int k,vector<int>&current,int n, vector < int > & arr)
             ans.push_back(current);
             return;
         }
+        if (n < 0 || (k - current.size()) * 9 < n) {
+            return;
+        }
         
         for(int i=idx;i< arr.size();i++)
         {
