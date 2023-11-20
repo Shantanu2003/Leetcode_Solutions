@@ -21,17 +21,12 @@ public:
                }
             }
         }
-        for(int i = 0 ; i<= maxG-1; i++){
-        totalSum += travel[i]; 
+        for(int i =1; i<travel.size() ;i++){
+            travel[i] += travel[i-1];
         }
-        for(int i = 0 ; i<= maxP-1; i++){
-        totalSum += travel[i]; 
-        }
-        for(int i = 0 ; i<= maxM-1; i++){
-        totalSum += travel[i]; 
-        }
-        totalSum += m+g+p;
-
-        return totalSum;
+        if(maxG > 0) totalSum+= travel[maxG-1];
+        if(maxM > 0) totalSum+= travel[maxM-1];
+        if(maxP > 0) totalSum+= travel[maxP-1];
+        return totalSum+m+p+g;
     }
 };
