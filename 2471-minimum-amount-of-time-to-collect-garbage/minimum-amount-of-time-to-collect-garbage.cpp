@@ -9,15 +9,15 @@ public:
             for(int i =0 ; i<garbage[s].size() ; i++){
                if(garbage[s][i] == 'G'){
                    g++;
-                   maxG= max(maxG,s);
+                   maxG= s;
                }
                else if(garbage[s][i] == 'P'){
                    p++;
-                   maxP= max(maxP,s);
+                   maxP= s;
                }
                else{
                    m++;
-                   maxM= max(maxM,s);
+                   maxM= s;
                }
             }
         }
