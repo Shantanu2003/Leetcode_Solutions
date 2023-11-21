@@ -10,28 +10,26 @@
  * };
  */
 class Solution {
-private:
-    TreeNode* prev = nullptr;
 public:
-    bool isValidBST(TreeNode* root) {
+bool isValidBST(TreeNode* root) {
+        // Call the helper function with initial range constraints
+        return helper(root, LONG_MIN, LONG_MAX);
+    }
+
+private:
+    bool helper(TreeNode* root, long long lower, long long upper) {
+        // Base case: an empty tree is a valid BST
         if (root == nullptr) {
             return true;
         }
-        // Check the left subtree
-        if (!isValidBST(root->left)) {
+
+        // Check the current node's value against the range constraints
+        if (root->val <= lower || root->val >= upper) {
             return false;
         }
 
-        // Check the current node's value
-        if (prev != nullptr && root->val <= prev->val) {
-            return false;
-        }
-
-        // Update the previous node to the current node
-        prev = root;
-
-        // Check the right subtree
-        return isValidBST(root->right);
+        // Recursively check the left and right subtrees with updated constraints
+        return helper(root->left, lower, root->val) &&
+               helper(root->right, root->val, upper);
     }
-
 };
