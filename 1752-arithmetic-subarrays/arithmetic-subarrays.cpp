@@ -6,30 +6,20 @@ public:
             int leftRange = l[i];
             int rightRange = r[i];
 
-            vector<int>query;
-            for(int j = leftRange; j<= rightRange ; j++){
-               query.push_back(nums[j]);
-            }
+            vector<int> query(nums.begin() + leftRange, nums.begin() + rightRange + 1);
             sort(query.begin(), query.end());
+
             bool flag = true;
             int diff = query[1] - query[0];
             for(int  k = 1 ; k < query.size()-1 ; k++){
-               if(query[k+1] - query[k] == diff)
-               flag = true;
-
-               else{
-                   flag = false;
-                   break;
+               if(query[k+1] - query[k] != diff){
+                flag = false;
+                break;
                }
             }
 
-            if(flag == true){
-                ans.push_back(true);
-            }
-            else{
-                ans.push_back(false);
-            }
-            //query.clear();
+        ans.push_back(flag);
+
         }
         return ans;
     }
