@@ -29,7 +29,7 @@ public:
             else{
                 ans.push_back(false);
             }
-            query.clear();
+            //query.clear();
         }
         return ans;
     }
