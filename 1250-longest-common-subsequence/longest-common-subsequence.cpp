@@ -5,6 +5,14 @@ public:
         int n2 = text2.size();
 
         vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1, 0));
+         for (int i = 0; i <= n1; i++) {
+            dp[i][0] = 0;  // If word2 is empty, delete all characters in word1
+        }
+
+        for (int j = 0; j <= n2; j++) {
+            dp[0][j] = 0;  // If word1 is empty, insert all characters from word2
+        }
+
 
         for(int  i = 1 ; i <= n1; i++){
          for(int  j =1 ; j <= n2; j++){
