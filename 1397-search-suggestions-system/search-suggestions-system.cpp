@@ -1,29 +1,22 @@
 class Solution {
 public:
     vector<vector<string>> suggestedProducts(vector<string>& products, string searchWord) {
-        set<string>s;
-        vector<vector<string>>res;
-        for(int i = 0 ; i < products.size() ; i++){
-            s.insert(products[i]);
+        auto start=products.begin();
+        sort(start,products.end());
+        vector<vector<string>>ans;
+        vector<string>temp;
+        string curr="";
+        for(auto c:searchWord){
+            curr+=c;
+            temp.clear();                       //upto this same as previous code
+            start=lower_bound(start,products.end(),curr);      // providing first occurance
+            for(int i=0;i<3 && start+i < products.end();i++){         //question asked 3 times so i<3 and start+i!=products.end() -> checks if we are out of index or not
+                string s=*(start+i);        //(start+i) gives the pointer and *(start+i) gives the value at the pointer->here string
+                if(s.find(curr))break;         //if we dont find the curr then we are sure that we are not going to find it in the upcoming words as they are in sorted manner
+                temp.push_back(s);
+            }
+            ans.push_back(temp);
         }
-        for(int i = 1 ; i <= searchWord.size() ; i++){
-           set<string>s1 = s;
-           vector<string>ans;
-
-           string prefix = searchWord.substr(0,i);
-
-           for(string element : s1){
-               if(element.substr(0,i) == prefix){
-                   ans.push_back(element);
-               }
-           }
-           if(ans.size() > 3)
-           res.push_back({ans[0], ans[1], ans[2]});
-
-           else
-           res.push_back({ans});
-
-        }
-    return res;
+        return ans;
     }
 };
