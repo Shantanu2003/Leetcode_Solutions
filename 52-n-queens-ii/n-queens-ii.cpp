@@ -40,7 +40,6 @@ void solveNQueensUtil(vector<string>& board, int row, int n,int &count) {
         return true;
 }
     int totalNQueens(int n) {
-        vector<vector<string>> result;
         vector<string> board(n, string(n, '.'));
         int count=0;
         solveNQueensUtil(board, 0, n,count);
