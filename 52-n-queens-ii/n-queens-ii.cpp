@@ -1,15 +1,15 @@
 class Solution {
 public:
-void solveNQueensUtil(vector<vector<string>>& result, vector<string>& board, int row, int n) {
+void solveNQueensUtil(vector<string>& board, int row, int n,int &count) {
         if (row == n) {
-            result.push_back(board);
+            count++;
             return;
         }
 
         for (int col = 0; col < n; ++col) {
             if (isValid(board, row, col, n)) {
                 board[row][col] = 'Q';
-                solveNQueensUtil(result, board, row + 1, n);
+                solveNQueensUtil(board, row + 1, n,count);
                 board[row][col] = '.';  // Backtrack
             }
         }
@@ -42,8 +42,9 @@ void solveNQueensUtil(vector<vector<string>>& result, vector<string>& board, int
     int totalNQueens(int n) {
         vector<vector<string>> result;
         vector<string> board(n, string(n, '.'));
-        solveNQueensUtil(result, board, 0, n);
+        int count=0;
+        solveNQueensUtil(board, 0, n,count);
         
-        return result.size();
+        return count;
     }
 };
