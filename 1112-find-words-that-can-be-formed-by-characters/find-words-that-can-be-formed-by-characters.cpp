@@ -1,42 +1,31 @@
 class Solution {
 public:
-    int countCharacters(vector<string>& words, const string& chars) {
-        unordered_map<char, int> charFreq;
-        int ans = 0;
-
-        // Calculate frequency of each character in chars
+    int countCharacters(vector<string>& words, string chars) {
+        vector<int> counts(26, 0);
         for (char c : chars) {
-            charFreq[c]++;
+            counts[c - 'a']++;
         }
-
-        // Iterate through each word in the vector
-        for (const string& word : words) {
-            // Check if the word can be formed from chars
-            if (canFormWord(word, charFreq)) {
-                ans += word.length();
+        
+        int ans = 0;
+        for (string word : words) {
+            vector<int> wordCount(26, 0);
+            for (char c : word) {
+                wordCount[c - 'a']++;
+            }
+            
+            bool good = true;
+            for (int i = 0; i < 26; i++) {
+                if (counts[i] < wordCount[i]) {
+                    good = false;
+                    break;
+                }
+            }
+            
+            if (good) {
+                ans += word.size();
             }
         }
-
+        
         return ans;
     }
-
-private:
-    bool canFormWord(const string& word, unordered_map<char, int>& charFreq) {
-        unordered_map<char, int> wordFreq;
-
-        // Calculate frequency of each character in the word
-        for (char c : word) {
-            wordFreq[c]++;
-        }
-
-        // Check if the word can be formed from chars
-        for (const auto& [c, freq] : wordFreq) {
-            if (freq > charFreq[c]) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 };
-
