@@ -1,35 +1,42 @@
 class Solution {
 public:
-    bool isFind(const string& s, const unordered_map<char, int>& mp) {
-        unordered_map<char, int> mp1;
-        for (char c : s) {
-            mp1[c]++;
-        }
-
-        for (const auto& kv : mp1) {
-            // Check if the key exists in the map before using at()
-            if (mp.find(kv.first) == mp.end() || kv.second > mp.at(kv.first)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     int countCharacters(vector<string>& words, const string& chars) {
-        unordered_map<char, int> mp;
+        unordered_map<char, int> charFreq;
         int ans = 0;
 
+        // Calculate frequency of each character in chars
         for (char c : chars) {
-            mp[c]++;
+            charFreq[c]++;
         }
 
+        // Iterate through each word in the vector
         for (const string& word : words) {
             // Check if the word can be formed from chars
-            if (isFind(word, mp)) {
+            if (canFormWord(word, charFreq)) {
                 ans += word.length();
             }
         }
 
         return ans;
     }
+
+private:
+    bool canFormWord(const string& word, unordered_map<char, int>& charFreq) {
+        unordered_map<char, int> wordFreq;
+
+        // Calculate frequency of each character in the word
+        for (char c : word) {
+            wordFreq[c]++;
+        }
+
+        // Check if the word can be formed from chars
+        for (const auto& [c, freq] : wordFreq) {
+            if (freq > charFreq[c]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 };
+
