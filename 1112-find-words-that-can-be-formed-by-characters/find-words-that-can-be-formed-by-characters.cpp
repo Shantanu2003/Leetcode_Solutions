@@ -23,19 +23,10 @@ public:
             mp[c]++;
         }
 
-        for (const string& s : words) {
-            if (isFind(s, mp)) {
-                unordered_map<char, int> mp1;
-                for (char c : s) {
-                    mp1[c]++;
-                }
-
-                for (const auto& kv : mp1) {
-                    // Check if the key exists in the map before using at()
-                    if (mp.find(kv.first) != mp.end()) {
-                        ans += min(kv.second, mp.at(kv.first));
-                    }
-                }
+        for (const string& word : words) {
+            // Check if the word can be formed from chars
+            if (isFind(word, mp)) {
+                ans += word.length();
             }
         }
 
