@@ -1,7 +1,7 @@
 class Solution {
 public:
     int totalMoney(int n) {
-        int res = 1;
+        int res = 0;
         int ans = 0;
         for(int  i =0; i < n; i++){
             if(i % 7 != 0){
@@ -13,6 +13,6 @@ public:
                 res += ans;
             }
         }
-        return res-1;
+        return res;
     }
 };
