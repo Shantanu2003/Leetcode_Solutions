@@ -11,7 +11,7 @@
  */
 class Solution {
 public:
-string preorder(TreeNode* root){ 
+string tree2str(TreeNode* root) {
     string ans;
     if(root == NULL){
         return "";
@@ -20,8 +20,8 @@ string preorder(TreeNode* root){
     
     ans += to_string(root->val);
 
-    string leftStr = preorder(root->left);
-    string rightStr = preorder(root->right);
+    string leftStr = tree2str(root->left);
+    string rightStr = tree2str(root->right);
 
     if (!leftStr.empty() || !rightStr.empty()) {
         ans += "(" + leftStr + ")";
@@ -31,8 +31,5 @@ string preorder(TreeNode* root){
         ans += "(" + rightStr + ")";
     }
     return ans;
-}
-    string tree2str(TreeNode* root) {
-        return preorder(root);
     }
 };
