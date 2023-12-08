@@ -33,8 +33,6 @@ string preorder(TreeNode* root){
     return ans;
 }
     string tree2str(TreeNode* root) {
-        string ans = "";
-        ans = preorder(root);
-        return ans;
+        return preorder(root);
     }
 };
