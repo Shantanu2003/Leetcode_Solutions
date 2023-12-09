@@ -1,91 +1,89 @@
-#include <vector>
-#include <string>
-#include <unordered_set>
-
-using namespace std;
-
-class TrieNode {
-public:
-    unordered_map<char, TrieNode*> children;
-    bool isEnd;
-
-    TrieNode() : isEnd(false) {}
+class trie {
+    public:
+    trie *arr[26];
+    bool end = false; // if a word ends here or not since there can be prefixes as well
+    string s = ""; // to keep track of how far down we have traversed
+    trie() {
+        memset(arr, 0, sizeof(arr));
+    }
 };
-
 class Trie {
-public:
+    public:
+    trie *root;
     Trie() {
-        root = new TrieNode();
+        root = new trie();
     }
-
-    void insert(const string& word) {
-        TrieNode* node = root;
-        for (char ch : word) {
-            if (node->children.find(ch) == node->children.end()) {
-                node->children[ch] = new TrieNode();
+    void insert(string &word)
+    {
+        int n = word.size();
+        trie *temp = root;
+        for(int i=0; i<n; i++)
+        {
+            if(temp->arr[word[i]-'a'] == NULL)
+            {
+                temp->arr[word[i]-'a'] = new trie();
             }
-            node = node->children[ch];
+            temp = temp->arr[word[i]-'a'];
         }
-        node->isEnd = true;
+        temp->end = true;
+		// making use of string only here since we don't need it otherwise
+        temp->s = word;
     }
-
-    TrieNode* getRoot() {
-        return root;
-    }
-
-private:
-    TrieNode* root;
 };
-
 class Solution {
 public:
-    void backtrack(vector<vector<char>>& board, int i, int j, TrieNode* node, string& current, unordered_set<string>& result) {
-        char ch = board[i][j];
-        TrieNode* child = node->children[ch];
-
-        if (child == nullptr) {
-            return;  // No matching word in the Trie
+	// we can move in all 4 directions in very less line(s) of code using this
+    vector<vector<int>> moves{{0,0,-1,1}, {1,-1,0,0}};
+	
+	//our final ans
+    vector<string> ans;
+	
+	//main function
+    void dfs(vector<vector<char>>& board, vector<string>& s, trie* ptr, int i, int j)
+    {
+        if(i==-1 || i==board.size() || j==-1 || j==board[0].size() || board[i][j]=='#') return;
+        
+		//traversing towards the character board[i][j] of the string (if present)
+		//this will be the first character of string when executed the first time (from the main original function)
+        ptr = ptr->arr[board[i][j]-'a'];
+        
+		//if no such word exist then we simply return
+        if(!ptr) return;
+		
+		//if this is a end that means a word exists so we append it to our ans
+        if(ptr->end) 
+        {
+            ptr->end = false;
+            ans.push_back(ptr->s);
         }
-
-        current.push_back(ch);
-        board[i][j] = '#';  // Mark the cell as visited
-
-        if (child->isEnd) {
-            result.insert(current);  // Found a valid word
-            child->isEnd = false;    // Avoid duplicate results
-        }
-
-        int m = board.size();
-        int n = board[0].size();
-
-        // Explore adjacent cells
-        if (i > 0) backtrack(board, i - 1, j, child, current, result);
-        if (i < m - 1) backtrack(board, i + 1, j, child, current, result);
-        if (j > 0) backtrack(board, i, j - 1, child, current, result);
-        if (j < n - 1) backtrack(board, i, j + 1, child, current, result);
-
-        board[i][j] = ch;  // Backtrack: restore the original value
-        current.pop_back();
+		
+		//since we can't come to a cell once traversed 
+        char el = board[i][j];
+		// we make it unusable for mean time
+        board[i][j] = '#';
+		
+		//traversing in all 4 directions with a single line of code !!
+        for(int x=0; x<4; x++) dfs(board, s, ptr, i+moves[0][x], j+moves[1][x]);
+		
+		//backtracking
+        board[i][j] = el;
     }
-
-    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
-        Trie trie;
-        for (const string& word : words) {
-            trie.insert(word);
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& s) {
+        int n = board.size(), m = board[0].size(), ss = s.size();
+        Trie obj;
+		//building the trie
+        for(int k=0; k<ss; k++)
+        {
+            obj.insert(s[k]);
         }
-
-        unordered_set<string> result;
-        string current;
-
-        int m = board.size();
-        int n = board[0].size();
-
-        for (int i = 0; i < m; ++i) {
-            for (int j = 0; j < n; ++j) {
-                backtrack(board, i, j, trie.getRoot(), current, result);
+		//instead of traversing for all words we just traverse one time across the whole board
+        for(int i=0; i<n; i++)
+        {
+            for(int j=0; j<m; j++)
+            {
+                dfs(board, s, obj.root, i, j);
             }
         }
-
-        return vector<string>(result.begin(), result.end());
+        return ans;
     }
 };
