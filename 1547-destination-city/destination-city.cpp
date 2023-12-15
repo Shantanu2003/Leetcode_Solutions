@@ -1,19 +1,18 @@
 class Solution {
 public:
     string destCity(vector<vector<string>>& paths) {
-        unordered_set<string>source;
-        unordered_set<string>destination;
+        unordered_set<string> sourceCities;
 
-        for(int i = 0 ; i < paths.size() ; i++){
-           source.insert(paths[i][0]);
-           destination.insert(paths[i][1]);
+        for (const auto& path : paths) {
+            sourceCities.insert(path[0]);
         }
-        
-        for(auto i: destination){
-            if(source.find(i) == source.end()){
-                return i;
+
+        for (const auto& path : paths) {
+            if (sourceCities.find(path[1]) == sourceCities.end()) {
+                return path[1];
             }
         }
-        return "";
+
+        return ""; 
     }
 };
