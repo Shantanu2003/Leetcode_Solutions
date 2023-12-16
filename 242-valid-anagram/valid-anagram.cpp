@@ -1,24 +1,23 @@
 class Solution {
 public:
     bool isAnagram(string s, string t) {
-        unordered_map<char,int>mp;
-        unordered_map<char,int>mp1;
-
-        if(s.size() != t.size())
-        return false;
-
-        for(char c: s){
-            mp[c]++;
-        }
-        for(char c :t){
-            mp1[c]++;
-        }
-
-        for(auto i :mp){
-            if(mp[i.first] != mp1[i.first])
+       if (s.size() != t.size())
             return false;
+
+        vector<int> charCount(26, 0); // Assuming input consists of lowercase English letters
+
+        for (char c : s) {
+            charCount[c - 'a']++;
         }
 
+        for (char c : t) {
+            charCount[c - 'a']--;
+        }
+
+        for (int count : charCount) {
+            if (count != 0)
+                return false;
+        }
 
         return true;
     }
