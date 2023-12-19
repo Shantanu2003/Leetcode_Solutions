@@ -1,26 +1,42 @@
 class Solution {
 public:
-        vector<vector<int>> imageSmoother(vector<vector<int>>& M) {
-        int m = M.size(), n = M[0].size();
-        if (m == 0 || n == 0) return {{}};
-        vector<vector<int>> dirs = {{0,1},{0,-1},{1,0},{-1,0},{-1,-1},{1,1},{-1,1},{1,-1}};
+    vector<vector<int>> imageSmoother(vector<vector<int>>& img) {
+        // Save the dimensions of the image.
+        int m = img.size();
+        int n = img[0].size();
+
+        // Iterate over the cells of the image.
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                int sum = M[i][j], cnt = 1;
-                for (int k = 0; k < dirs.size(); k++) {
-                    int x = i + dirs[k][0], y = j + dirs[k][1];
-                    if (x < 0 || x > m - 1 || y < 0 || y > n - 1) continue;
-                    sum += (M[x][y] & 0xFF);
-                    cnt++;
+                // Initialize the sum and count 
+                int sum = 0;
+                int count = 0;
+
+                // Iterate over all plausible nine indices.
+                for (int x = i - 1; x <= i + 1; x++) {
+                    for (int y = j - 1; y <= j + 1; y++) {
+                        // If the indices form valid neighbor
+                        if (0 <= x && x < m && 0 <= y && y < n) {
+                            // Extract the original value of img[x][y].
+                            sum += img[x][y] & 255;
+                            count += 1;
+                        }
+                    }
                 }
-                M[i][j] |= ((sum / cnt) << 8);
+                
+                // Encode the smoothed value in img[i][j].
+                img[i][j] |= (sum / count) << 8;
             }
         }
-         for (int i = 0; i < m; i++) {
+
+        // Extract the smoothed value from encoded img[i][j].
+        for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                M[i][j] >>= 8;
+                img[i][j] >>= 8;
             }
-         }
-        return M;
+        }
+
+        // Return the smooth image.
+        return img;
     }
 };
