@@ -19,9 +19,9 @@ pair<int, int> findTwoMinimum(vector<int>& arr) {
     int buyChoco(vector<int>& prices, int money) {
       auto result = findTwoMinimum(prices);
       int diff = money - result.first - result.second;
-      if(diff < 0)
-      return money;
+    
+    
+    return (diff < 0) ? money : diff;
 
-      return diff;
     }
 };
