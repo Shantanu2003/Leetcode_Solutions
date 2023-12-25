@@ -11,30 +11,22 @@
  */
 class Solution {
 public:
-    vector<int> traversal(TreeNode* root, vector<int> &ans){
-        if(root ==NULL){
-            return {};
+    bool traverseAndCheck(TreeNode* root, int k, unordered_set<int>& mp) {
+        if (root == nullptr) {
+            return false;
         }
-        
-        ans.push_back(root->val);
-        traversal(root->left, ans);
-        traversal(root->right,ans);
 
-        return ans;
+        int complement = k - root->val;
+        if (mp.count(complement)) {
+            return true;
+        }
+
+        mp.insert(root->val);
+
+        return traverseAndCheck(root->left, k, mp) || traverseAndCheck(root->right, k, mp);
     }
     bool findTarget(TreeNode* root, int k) {
         unordered_set<int>mp;
-        vector<int> ans;
-        traversal(root,ans);
-        int n = ans.size();
-
-        for (int i = 0; i < n; i++) {
-            int complement = k - ans[i];
-            if (mp.count(complement)) {
-                return true;
-            }
-            mp.insert(ans[i]);
-        }
-    return false;
+        return traverseAndCheck(root,k,mp);
     }
 };
