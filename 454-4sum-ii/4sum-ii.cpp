@@ -17,9 +17,7 @@ public:
         for (int k = 0; k < n; k++) {
             for (int l = 0; l < n; l++) {
                 int complement = -(nums3[k] + nums4[l]);
-                if (sumFreq.count(complement)) {
                     count += sumFreq[complement];
-                }
             }
         }
 
