@@ -11,21 +11,21 @@
  */
 class Solution {
 public:
-    vector<int> inorder(TreeNode* root, vector<int> &ans){
+    vector<int> traversal(TreeNode* root, vector<int> &ans){
         if(root ==NULL){
             return {};
         }
         
         ans.push_back(root->val);
-        inorder(root->left, ans);
-        inorder(root->right,ans);
+        traversal(root->left, ans);
+        traversal(root->right,ans);
 
         return ans;
     }
     bool findTarget(TreeNode* root, int k) {
         unordered_set<int>mp;
         vector<int> ans;
-        inorder(root,ans);
+        traversal(root,ans);
         int n = ans.size();
 
         for (int i = 0; i < n; i++) {
