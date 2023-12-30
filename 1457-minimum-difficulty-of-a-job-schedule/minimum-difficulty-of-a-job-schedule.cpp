@@ -1,29 +1,48 @@
 class Solution {
 public:
     int minDifficulty(vector<int>& jobDifficulty, int d) {
-        int n = jobDifficulty.size();
-        
-        if (d > n)
+        int len = jobDifficulty.size();
+        if (len < d) {
             return -1;
-
-        int result = INT_MAX;
-        std::vector<std::vector<int>> dp(n + 1, std::vector<int>(d + 1, INT_MAX));
-
-        dp[0][0] = 0;
-
-        for (int i = 1; i <= n; ++i) {
-            for (int k = 1; k <= d; ++k) {
-                int maxDifficulty = 0;
-
-                for (int j = i - 1; j >= k - 1; --j) {
-                    maxDifficulty = std::max(maxDifficulty, jobDifficulty[j]);
-                    dp[i][k] = std::min(dp[i][k], (dp[j][k - 1] != INT_MAX) ? (dp[j][k - 1] + maxDifficulty) : INT_MAX);
-                }
-            }
         }
+        int sum = accumulate(jobDifficulty.begin(), jobDifficulty.end(), 0);
+        if (sum == 0) {
+            return 0;
+        }
+        vector<vector<int>> memo(d + 1, vector<int>(len, 0));
+        helper(jobDifficulty, d, 0, memo);
+        
+        return memo[d][0];
+    }
 
-        result = dp[n][d];
+private:
+    void helper(vector<int>& jd, int daysLeft, int idx, vector<vector<int>>& memo) {
+        int len = jd.size();
+        if (memo[daysLeft][idx] != 0) {
+            return;
+        }
+        if (daysLeft == 1) {
+            int num = 0;
+            for (int i = idx; i < len; i++) {
+                num = max(num, jd[i]);
+            }
+            memo[daysLeft][idx] = num;
+            return;
+        }
+        int maxDifficulty = jd[idx];
+        daysLeft--;
+        int stop = len - idx - daysLeft + 1;
 
-        return (result == INT_MAX) ? -1 : result;
+        int res = INT_MAX;
+        for (int i = 1; i < stop; i++) {
+            maxDifficulty = max(maxDifficulty, jd[idx + i - 1]);
+            int other = memo[daysLeft][idx + i];
+            if (other == 0) {
+                helper(jd, daysLeft, idx + i, memo);
+                other = memo[daysLeft][idx + i];
+            }
+            res = min(res, other + maxDifficulty);   
+        }
+        memo[daysLeft + 1][idx] = res;
     }
 };
