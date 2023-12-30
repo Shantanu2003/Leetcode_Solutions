@@ -1,69 +1,44 @@
 class Solution {
+private:
+    bool isSpace(char c){ return c==' ';}
+    bool isSgn(char c){ return c=='+'||c=='-';}
+    bool isDot(char c){ return c=='.';}
+    bool isNum(char c){ return c<='9'&&c>='0';}
+    bool isE(char c){ return c=='e'||c=='E';}
+    
 public:
     bool isNumber(string s) {
-        int i=0, n=s.size();
+        int pos=0;
+        bool haveNum = false;
 
-        // iterate over sign
-        if(s[i]=='+' || s[i]=='-') i++;
+        // Check all the prefix spaces
+        while ( pos<s.size() && isSpace(s[pos]) ) pos++;
 
-        // checking ending condition
-        if(i>=n) return false;
-        
-        bool beforeInt = false;
+        // Check the next char if it's a +/- signal
+        if ( pos<s.size() && isSgn(s[pos]) ) pos++;
 
-        // iterating digits
-        while(s[i]>='0' && s[i]<='9' && i<n){
-            i++;
-            beforeInt = true;
+        // Check the numbers before a dot '.'
+        while ( pos<s.size() && isNum(s[pos]) ) {haveNum = true; pos++;}
+
+        // Check the dot '.'
+        if ( pos<s.size() && isDot(s[pos]) ) pos++;
+
+        // Check the numbers after a dot '.'
+        while ( pos<s.size() && isNum(s[pos]) ) {haveNum = true; pos++;}
+
+        // Check the 'e' / 'E'
+        if ( haveNum && pos<s.size() && isE(s[pos]) ) {
+            haveNum = false; pos++;
+            if ( pos<s.size() && isSgn(s[pos]) ) pos++;
         }
 
-        // checking ending condition
-        if(i>=n) return true;
+        // Check the numbers after 'e' / 'E'
+        while ( pos<s.size() && isNum(s[pos]) ) {haveNum = true; pos++;}
 
-        // Passing dot
-        bool dot = false;
-        if(s[i] == '.') {i++; dot = true;}
+        // Check all the remaining spaces
+        while ( pos<s.size() && isSpace(s[pos]) ) pos++;
 
-        // check dot ending condition
-        if(i>=n)
-            if(dot==true && beforeInt==false) return false;
-            else return true;
-        
-        // bool afterInt = false;
-
-        // check digit after dot
-        if(dot) 
-        if(beforeInt) {if((s[i]<'0' || s[i]>'9') && (s[i]!='e' && s[i]!='E') ) return false; }
-        else {if(s[i]<'0' || s[i]>'9') return false; }
-
-        // iterate decimals until we reach last indext or e
-        while(i<n && s[i]!='e' && s[i]!='E'){
-            if(s[i]<'0' || s[i]>'9') return false;
-            i++;
-        }
-        if(!dot)
-        if((s[i]=='e' || s[i]=='E') && beforeInt==false) return false;
-        // checking ending condition
-        if(i>=n) return true;
-        
-        i++; // next ot e
-        
-        // iterate sign
-        if(s[i]=='+' || s[i]=='-') i++;
-
-        // checking ending condition
-        if(i>=n) return false;
-
-        bool lastInt = false;
-        // iterate over digits
-        while(s[i]>='0' && s[i]<='9' && i<n){
-            i++;
-            lastInt = true;
-        }
-
-        if(!lastInt) return false;
-
-        if(i>=n) return true;
-        return false;
+        // Everything is done, if the string not empty, return false.
+        return ( pos==s.size() && haveNum );
     }
 };
