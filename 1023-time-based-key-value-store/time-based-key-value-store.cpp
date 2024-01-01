@@ -10,18 +10,10 @@ public:
     }
     
     string get(string key, int timestamp) {
-        auto  it = data.find(key);
-        if(it != data.end()){
-            auto& values = it->second;
-
-            auto itValue = values.upper_bound(timestamp);
-
-            if(itValue != values.begin()){
-                itValue--;
-                return itValue->second;
-            }
-        }
-        return "";
+        auto it=data[key].upper_bound(timestamp);
+        if(it==data[key].begin())return "";
+        it--;
+        return it->second;
     }
 };
 
