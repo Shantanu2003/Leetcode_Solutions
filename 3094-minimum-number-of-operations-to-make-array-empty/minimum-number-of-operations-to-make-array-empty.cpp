@@ -10,7 +10,7 @@ public:
             if(i.second == 1){
                 return -1;
             }
-            count += std::min((i.second / 2), static_cast<int>(std::ceil(i.second / 3.0)));
+            count += min((i.second / 2), static_cast<int>(ceil(i.second / 3.0)));
         }
         return count;
     }
