@@ -11,32 +11,25 @@
  */
 class Solution {
 public:
-pair<int, int> helper(TreeNode* root) {
-        if (root == NULL)
-            return make_pair(INT_MIN, INT_MAX);
+int helper(TreeNode* root,int minValue, int maxValue) {
+        if (root == NULL) {
+            return maxValue - minValue;
+        }
 
-        int maxVal = root->val;
-        int minVal = root->val;
+        // Update minValue and maxValue based on the current node's value
+        minValue = min(minValue, root->val);
+        maxValue = max(maxValue, root->val);
 
-        pair<int, int> leftResult = helper(root->left);
-        pair<int, int> rightResult = helper(root->right);
+        // Recursively explore the left and right subtrees
+        int leftDiff = helper(root->left, minValue, maxValue);
+        int rightDiff = helper(root->right, minValue, maxValue);
 
-        maxVal = max(maxVal, max(leftResult.first, rightResult.first));
-        minVal = min(minVal, min(leftResult.second, rightResult.second));
-
-        return make_pair(maxVal, minVal);
+        // Return the maximum difference among left subtree, right subtree, and the current path
+        return max(leftDiff, rightDiff);
     }
 
     int maxAncestorDiff(TreeNode* root) {
-        if (root == NULL)
-            return 0;
+      return helper(root, INT_MAX, INT_MIN);
 
-        pair<int, int> result = helper(root);
-
-        int leftVal = max(abs(root->val - result.first), abs(root->val - result.second));
-        int rightVal = max(leftVal, maxAncestorDiff(root->left));
-        rightVal = max(rightVal, maxAncestorDiff(root->right));
-
-        return rightVal;
     }
 };
