@@ -6,7 +6,6 @@ public:
     int firstBadVersion(int n) {
         int low = 0; 
         int high = n;
-        int res= 0;
         if(n == 1)
         return 1;
 
@@ -16,12 +15,11 @@ public:
             if(isBadVersion(mid)){
             high = mid-1;
             low = 0;
-            res = mid;
             }
 
             else
             low = mid +1;
         }
-        return res;
+        return low;
     }
 };
