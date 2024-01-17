@@ -1,25 +1,25 @@
 class Solution {
 public:
-    vector<int> findClosestElements(vector<int>& arr, int k, int x) {
-        
-        int n = arr.size();
-        vector<int> ans;
-        priority_queue<int, vector<int>, greater<int>> pq;
-        
-        for(int i = 0; i < n; i++)
-        {
-            if(pq.size() != k)
-                pq.push(arr[i]);
-            else 
-            {
-                if(abs(arr[i] - x) < abs(pq.top() - x)){
-                    pq.pop(); pq.push(arr[i]);}
-            }
-        }
-            
-        while(pq.size())
-            ans.push_back(pq.top()), pq.pop();
-        
-        return ans;
-    }
+ 
+vector<int> findClosestElements(vector<int>& arr, int k, int x) {
+
+    // making a min-heap of absolute difference and corresponding array value
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+
+    // store the difference one by one with the array value
+	for (int i = 0; i < arr.size(); i++)
+		pq.push({abs(arr[i] - x), arr[i]});
+
+	vector<int> ans;
+
+    // get the top of the heap i.e. the element with minimum absolute difference
+	for (int i = 0; i < k; i++)
+	{
+		ans.push_back(pq.top().second);
+		pq.pop(); // pop it k times
+	}
+
+	sort(ans.begin(), ans.end());
+	return ans;
+}
 };
