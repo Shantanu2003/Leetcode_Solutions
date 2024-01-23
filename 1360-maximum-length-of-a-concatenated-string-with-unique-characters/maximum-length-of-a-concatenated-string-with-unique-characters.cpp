@@ -1,6 +1,6 @@
 class Solution {
 public:
-int maxLengthHelper(const vector<string>& arr, int index, const string& current, unordered_set<char>& charSet) {
+ int maxLengthHelper(const vector<string>& arr, int index, const string& current, unordered_set<char>& charSet) {
     int max_length = current.size();
 
     for (int i = index; i < arr.size(); ++i) {
