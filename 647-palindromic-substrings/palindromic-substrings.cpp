@@ -1,36 +1,31 @@
 class Solution {
 public:
-bool solve(vector<vector<bool>> &dp, int i, int j, string &s){
-        if(i == j){
-            return dp[i][j] = true;
-        }
-        if(j-i == 1){
-            if(s[i] == s[j]){
-                return dp[i][j] = true;
-            }
-            else{
-                return dp[i][j] = false;
-            }
-        }
-        if(s[i] == s[j] && dp[i+1][j-1] == true){
-            return dp[i][j] = true;
-        } else {
-            return dp[i][j] = false;
-        }
-    }
     int countSubstrings(string s) {
-        int n = s.size();
-        int startIndex = 0; int count = 0;
-        vector<vector<bool>> dp(n, vector<bool>(n, false));
-        for(int g=0; g<n; g++){
-            for(int i=0, j=g; j<n; i++, j++){
-                solve(dp, i, j, s);
-                if(dp[i][j] == true){
-                   count++;
+        int n = s.length();
+        vector<vector<bool>> palindrome(n, vector<bool>(n, false));
+        int ans = 0;
+
+        for (int i = 0; i < n; ++i) {
+            palindrome[i][i] = true;
+            ans++;
+        }
+
+        for (int i = 0; i < n - 1; ++i) {
+            if (s[i] == s[i + 1]) {
+                palindrome[i][i + 1] = true;
+                ans++;
+            }
+        }
+
+        for (int len = 3; len <= n; ++len) {
+            for (int i = 0; i < n - len + 1; ++i) {
+                if (s[i] == s[i + len - 1] && palindrome[i + 1][i + len - 2]) {
+                    palindrome[i][i + len - 1] = true;
+                    ans++;
                 }
             }
         }
-        return count;
+
+        return ans;
     }
 };
-
