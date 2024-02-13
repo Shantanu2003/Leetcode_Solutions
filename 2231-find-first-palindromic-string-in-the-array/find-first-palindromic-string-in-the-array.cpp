@@ -1,19 +1,31 @@
 class Solution {
 public:
-    string reverse(string s){
-        string res = "";
-        for(int i = s.size() - 1 ; i >= 0 ; i-- ){
-            res += s[i]; 
+    bool isPalindrome(string& s) {
+        int start = 0;
+        int end = s.size() - 1;
+        bool flag =true;
+        while (start <= end) {
+            // Return false if the characters are not the same.
+            if (s[start] == s[end]) {
+                   start++;
+                   end--;
+            }
+            else{
+                flag = false;
+                break;
+            }  
         }
-        return res;
+        
+        return flag;
     }
+    
     string firstPalindrome(vector<string>& words) {
-        for(string s: words){
-          string rev = reverse(s);
-
-          if(s == rev)
-          return s;
+        for (string s : words) {
+            if (isPalindrome(s)) {
+                return s;
+            }
         }
-    return "";
+        
+        return "";
     }
 };
