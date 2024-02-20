@@ -1,10 +1,18 @@
 class Solution {
 public:
     int missingNumber(vector<int>& nums) {
-        for(int i = 0 ; i <= nums.size() ; i++){
-            if(find(nums.begin(), nums.end() , i) == nums.end())
-            return i;
+                int missing = 0;
+
+        // XOR all numbers from 0 to n
+        for (int i = 0; i <= nums.size(); i++) {
+            missing ^= i;
         }
-        return -1;
+        
+        // XOR all elements in nums
+        for (int num : nums) {
+            missing ^= num;
+        }
+        
+        return missing;
     }
 };
