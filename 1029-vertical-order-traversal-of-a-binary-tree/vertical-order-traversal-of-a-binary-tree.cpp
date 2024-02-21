@@ -11,46 +11,48 @@
  */
 class Solution {
 public:
- vector<vector<int>> verticalTraversal(TreeNode* root) {
-        map<int, map<int, vector<int>>> levels; // Map of vertical levels -> Map of depth -> Nodes
-        queue<pair<TreeNode*, pair<int, int>>> q; // Node, {vertical level, depth}
+void numberLine(TreeNode* root,  map<int, map<int, vector<int>>>& mp){
+    queue<pair<pair<int, int>, TreeNode*>> q;
 
-        if (root == nullptr)
-            return {};
+    if(root == NULL)
+    return;
 
-        q.push({root, {0, 0}}); // Push root with vertical level 0 and depth 0
+    q.push({{0,0},root});
 
-        while (!q.empty()) {
-            int size = q.size();
-            for (int i = 0; i < size; ++i) {
-                auto current = q.front();
-                q.pop();
-                TreeNode* node = current.first;
-                int level = current.second.first;
-                int depth = current.second.second;
+    while(!q.empty()){
+        auto curr = q.front();
+        int level = curr.first.first;
+        int depth = curr.first.second;
+        TreeNode* node = curr.second;
+        mp[level][depth].push_back(node->val);
 
-                levels[level][depth].push_back(node->val);
 
-                if (node->left != nullptr)
-                    q.push({node->left, {level - 1, depth + 1}});
+        q.pop();
 
-                if (node->right != nullptr)
-                    q.push({node->right, {level + 1, depth + 1}});
-            }
+        if(node->left != NULL){
+            q.push({{level-1,depth+1}, node->left});
+
         }
 
-        vector<vector<int>> result;
-        for (auto& level : levels) {
-            vector<int> column;
-            for (auto& depth : level.second) {
-                vector<int>& nodes = depth.second;
-                sort(nodes.begin(), nodes.end());
-                column.insert(column.end(), nodes.begin(), nodes.end());
-            }
-            result.push_back(column);
+        if(node->right != NULL){
+            q.push({{level+1,depth+1}, node->right});
         }
-
-        return result;
     }
+}
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        map<int, map<int, vector<int>>> mp;
+        numberLine(root,mp);
+        vector<vector<int>> ans;
 
+        for (auto& i : mp) {
+            vector<int>res;
+            for(auto j: i.second){
+            auto& nodes = j.second;
+            sort(nodes.begin(), nodes.end());
+            res.insert(res.end(), nodes.begin(), nodes.end());
+        }
+        ans.push_back(res);
+    }
+        return ans;
+    }
 };
