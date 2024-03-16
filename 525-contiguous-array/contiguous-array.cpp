@@ -10,9 +10,9 @@ public:
 
             
             if (sum == 0) {
-                maxSize = std::max(maxSize, i + 1);
+                maxSize = max(maxSize, i + 1);
             } else if (mp.find(sum) != mp.end()) {
-                maxSize = std::max(maxSize, i - mp[sum]);
+                maxSize = max(maxSize, i - mp[sum]);
             } else {
                 mp[sum] = i;
             }
