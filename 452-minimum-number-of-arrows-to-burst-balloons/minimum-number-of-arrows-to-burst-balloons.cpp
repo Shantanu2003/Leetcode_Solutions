@@ -16,6 +16,8 @@ public:
                 ans++;
                 first = end;
             }
+
+            else
             first = min(points[j][1],first);
 
         }
