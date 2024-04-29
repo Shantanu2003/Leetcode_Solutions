@@ -31,8 +31,6 @@ public:
             res1 += '0';
         }
 
-        int count0 = 0, count1 = 0;
-
         int count = 0;
         for(int i = 0 ; i < res1.size() ; i++){
             if(res1[i] != k1[i])
