@@ -23,7 +23,7 @@ public:
         }
                 
         int counter = 4;
-        while(!pq.empty() && counter <= score.size()){
+        while(!pq.empty()){
             auto front = pq.top();
             pq.pop();
             res[front.second] = to_string(counter);
