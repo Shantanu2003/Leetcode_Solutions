@@ -1,47 +1,29 @@
 class Solution {
 public:
-    string convertEven(string s){
-        int j = s.size() - 1;
-        int countzero = 0;
-        while(j >= 0){
-            if(s[j] == '1'){
-                s[j] = '0';
-                countzero++;
+ int numSteps(string s) {
+        int steps = 0;
+        while (s != "1") {
+            int n = s.size() - 1;
+            if (s[n] == '0') {
+                // If the last character is '0', just remove it (divide by 2)
+                s.pop_back();
+            } else {
+                // If the last character is '1', we need to handle the carry
+                while (n >= 0 && s[n] == '1') {
+                    s[n] = '0';
+                    n--;
+                }
+                if (n < 0) {
+                    // If we flipped all '1's to '0's and ran out of characters,
+                    // we need to add an additional '1' at the beginning
+                    s = '1' + s;
+                } else {
+                    // Change the first '0' we encounter to '1'
+                    s[n] = '1';
+                }
             }
-            else{
-                s[j] = '1';
-                break;
-            }
-            j--;
+            steps++;
         }
-        if(countzero == s.size()){
-            s += '1';
-            reverse(s.begin(),s.end());
-
-        }
-        return s;
-    }
-    int count = 0;
-    int solve(string s){
-        if(s == "1"){
-            return 0;
-        }
-
-        int n = s.size() - 1;
-
-        if(s[n] == '1'){
-            s= convertEven(s);
-            count++;
-        }
-        else{
-            s.pop_back();  
-            count++;
-        }
-
-        solve(s);
-        return count;
-    }
-    int numSteps(string s) {
-        return solve(s);
+        return steps;
     }
 };
