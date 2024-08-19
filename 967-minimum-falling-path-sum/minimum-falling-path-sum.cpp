@@ -1,9 +1,27 @@
 class Solution {
 public:
-    int minFallingPathSum(vector<vector<int>>& A) {
-  for (auto i = 1; i < A.size(); ++i)
-    for (auto j = 0; j < A.size(); ++j)
-      A[i][j] += min({ A[i-1][j], A[i-1][max(0,j-1)], A[i-1][min((int)A.size()-1,j+1)] });
-  return *min_element(begin(A[A.size() - 1]), end(A[A.size() - 1]));
-}
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+
+        // Start from the second-to-last row and move upwards
+        for (int row = n - 2; row >= 0; --row) {
+            for (int col = 0; col < n; ++col) {
+                int down = matrix[row + 1][col]; // Move straight down
+
+                int left = (col > 0) ? matrix[row + 1][col - 1] : INT_MAX; // Move down-left
+                int right = (col < n - 1) ? matrix[row + 1][col + 1] : INT_MAX; // Move down-right
+
+                // Update the current cell with the minimum falling path sum
+                matrix[row][col] += min(down, min(left, right));
+            }
+        }
+
+        // The answer will be the minimum value in the first row
+        int minPathSum = INT_MAX;
+        for (int col = 0; col < n; ++col) {
+            minPathSum = min(minPathSum, matrix[0][col]);
+        }
+
+        return minPathSum;
+    }
 };
