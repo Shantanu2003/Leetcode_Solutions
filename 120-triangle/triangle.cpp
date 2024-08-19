@@ -1,18 +1,25 @@
 class Solution {
 public:
+    int helper(vector<vector<int>>&grid, vector<vector<int>>&dp, int row, int col, int n){
+        if(row == n-1)
+        return grid[row][col];;
+
+        if(dp[row][col] != -1)
+        return dp[row][col];
+
+        int down = helper(grid,dp,row+1, col, n);
+        int right = helper(grid, dp,row+1,col+1,n);
+
+        dp[row][col] = grid[row][col] + min(down,right);
+
+        return dp[row][col];
+    }
     int minimumTotal(vector<vector<int>>& triangle) {
-        int row = triangle.size();
+        int n = triangle.size();
+        int m = triangle[0].size();
 
-        // Start from the second-to-last row and update the values
-        for (int i = row - 2; i >= 0; --i) {
-            int col = triangle[i].size();
-            for (int j = 0; j < col; ++j) {
-                // Choose the minimum path sum by adding the current value and the minimum of the two adjacent values in the next row
-                triangle[i][j] += std::min(triangle[i + 1][j], triangle[i + 1][j + 1]);
-            }
-        }
+        vector<vector<int>>dp(n,vector<int>(n,-1));
 
-        // The final minimum path sum is the updated value at the top of the triangle
-        return triangle[0][0];
+        return helper(triangle, dp, 0,0,n);
     }
 };
