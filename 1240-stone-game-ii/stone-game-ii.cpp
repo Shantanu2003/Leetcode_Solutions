@@ -1,26 +1,44 @@
 class Solution {
 public:
-int helper(vector<int>& piles, vector<vector<int>>& dp, const vector<int>&
-suffixSum, int i, int M) {
-if (i == piles.size()) return 0;
-if (i + 2 * M >= piles.size()) return suffixSum[i];
-if (dp[i][M] != 0) return dp[i][M];
-int result = 0;
-for (int x = 1; x <= 2 * M; ++x) {
-result = max(result, suffixSum[i] - helper(piles, dp, suffixSum, i + x,
+    int helper(vector<int>& suffix,vector<vector<int>>& dp, int index, int m){
+          if(index + 2*m >= suffix.size())
+          return suffix[index];
 
-max(M, x)));
-}
-dp[i][M] = result;
-return result;
-}
-int stoneGameII(vector<int>& piles) {
-if (piles.empty()) return 0;
-vector<vector<int>> dp(piles.size(), std::vector<int>(piles.size(), 0));
-vector<int> suffixSum(piles.size());
-suffixSum[suffixSum.size() - 1] = piles[piles.size() - 1];
-for (int i = piles.size() - 2; i >= 0; --i) suffixSum[i] = piles[i] +
-suffixSum[i + 1];
-return helper(piles, dp, suffixSum, 0, 1);
-}
+          if(dp[index][m] != -1)
+          return dp[index][m];
+
+          int maxi = INT_MAX;
+
+          for(int i = 1; i <= 2*m ; i++){
+            int val = helper(suffix,dp, index+i, max(m,i));
+            maxi = min(maxi,val);
+          }
+
+          dp[index][m] = suffix[index] - maxi;
+
+          return dp[index][m];
+
+    }
+    int stoneGameII(vector<int>& piles) {
+        int n = piles.size();
+        int res = 0;
+        if(n <= 2){
+            for(int i = 0; i < n ; i++){
+               res += piles[i];
+            }
+        }
+
+        vector<int>suffix(n);
+        suffix[n-1] = piles[n-1];
+        for(int i = n-2; i >= 0; i--){
+            suffix[i] = piles[i] + suffix[i+1];
+        }
+
+
+         vector<vector<int>>dp(n, vector<int>(n,-1));
+
+         res = helper(suffix,dp,0,1);
+
+         return res;
+    }
 };
